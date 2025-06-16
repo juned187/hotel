@@ -1,11 +1,9 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { ChevronDown, Star, MapPin, Calendar, Users, Wifi, Car, Coffee, Utensils, Dumbbell, Waves, ArrowLeft, Check, Heart, Share2, X, ChevronLeft, ChevronRight, Camera, Image, Play } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useParams, Link } from 'react-router-dom';
 
 const Hero = () => {
-  const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
@@ -22,7 +20,7 @@ const Hero = () => {
     "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
   ];
 
- 
+  // Sample gallery images
   const categories = [
     { id: 'all', name: 'All Photos', icon: Image },
     { id: 'rooms', name: 'Rooms & Suites', icon: Camera },
@@ -67,6 +65,8 @@ const Hero = () => {
   };
 
   const HomePage = () => {
+    const navigate = useNavigate();
+
     return (
       <>
         <section className="relative h-screen overflow-hidden">
@@ -157,7 +157,7 @@ const Hero = () => {
                       </div>
                     </div>
                     <button 
-                      onClick={() => router.push('/room')}
+                      onClick={() => navigate('/rooms')}
                       className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg font-semibold hover:from-yellow-600 hover:to-orange-600 transition-all transform hover:scale-105 p-3 shadow-lg"
                     >
                       Search Rooms
@@ -173,13 +173,15 @@ const Hero = () => {
   };
 
   const GalleryPage = () => {
+    const navigate = useNavigate();
+
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
         <div className="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-lg border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <Link 
-                href="/"
+                to="/"
                 className="flex items-center gap-2 text-slate-700 hover:text-blue-600 transition-colors"
               >
                 <ArrowLeft className="w-5 h-5" />
@@ -189,7 +191,7 @@ const Hero = () => {
                 Hotel Gallery
               </h1>
               <Link 
-                href="/rooms"
+                to="/rooms"
                 className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all"
               >
                 View Rooms
@@ -327,9 +329,12 @@ const Hero = () => {
 
   // Main App with Routing
   return (
-    <>
-      <HomePage />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/gallery" element={<GalleryPage />} />
+      </Routes>
+    </Router>
   );
 };
 
